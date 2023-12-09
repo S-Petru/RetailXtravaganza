@@ -1,0 +1,26 @@
+==IMPORTANT==
+
+[] Dashboard [10p]
+    Dashboard pentru vizualizarea datelor
+
+[] Predictie cerere la nivel produs {15p}
+    Model pentru predicția cererii la nivel de produs.
+
+[] Notificari personalizate cu LLM {10p}
+    Utilizarea LLMs (sau alte tehnici) pentru combinarea datelor
+    rezultate din optimizarea aprovizionării
+    cu generarea de limbaj natural.
+
+[] Utilizare LLM pentru generarea recomandarilor {10p}
+    Utilizarea LLMs (sau alte tehnici) pentru combinarea datelor
+    rezultate din generarea ofertelor personalizate cu generarea
+    de limbaj natural.
+
+[] Recomandari personalizate pentru cumparatori {20p}
+    Model pentru selectarea perechilor client – produs ofertat.
+
+
+==BONUS==
+[x] Arhitectura / Modularitate {10p}
+
+[] UI intuitiv si atractiv {10p}
