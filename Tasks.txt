@@ -24,3 +24,15 @@
 [x] Arhitectura / Modularitate {10p}
 
 [] UI intuitiv si atractiv {10p}
+
+Twillow password:
+12345MsgGen*890*
+
+SID
+AC27d3477d4e895930aea02481e6cb0b07
+
+Auth token:
+20d4287a68f6f99c5759ba678f2e729c
+
+Phone Numb:
++13107361968
