@@ -1,12 +1,10 @@
-streamlit
-scipy
-seaborn
-twilio
-requests
 pandas
 numpy
 scikit-learn
 matplotlib
-dash
-plotly
 openpyxl
+plotly
+streamlit
+twilio
+openai
+pulp
