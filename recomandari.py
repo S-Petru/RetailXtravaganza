@@ -32,7 +32,3 @@ def app():
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.error("Nu există suficiente date pentru generarea top 10 produse.")
-
-# Asigurați-vă că apelul funcției app() este executat doar atunci când acest script este rulat direct
-if __name__ == '__main__':
-    app()
