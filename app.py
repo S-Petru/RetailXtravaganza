@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 import welcomeBack, alerts, recomandari, anomalii, suport
 
 st.set_page_config(
-        page_title="Explore Metrics"
+        page_title="RetailX"
 )
 
 class MultiApp:
@@ -20,7 +20,7 @@ class MultiApp:
         # app = st.sidebar(
         with st.sidebar:        
             app = option_menu(
-                menu_title='Explore Metrics',
+                menu_title='RetailX Metrics',
                 options=['Bine Ai Venit', 'Anomalii Stoc', 'Recomandari', 'Alerte', 'Suport'],
                 icons=['emoji-laughing', 'database-exclamation', 'graph-up-arrow', 'exclamation-triangle', 'headset'],
                 menu_icon='clipboard-data',
@@ -42,5 +42,10 @@ class MultiApp:
             anomalii.app()  
         if app == "Suport":
             suport.app()  
+
+        # Afiseaza copyright-ul în partea de jos a sidebar-ului
+        st.sidebar.markdown("---")
+        st.sidebar.markdown("© 2023 DevMinds")
+
     run()            
       
