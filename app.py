@@ -3,9 +3,9 @@ from streamlit_option_menu import option_menu
 import welcomeBack, alerts, recomandari, anomalii, suport
 
 st.set_page_config(
-        page_title="RetailX"
+        page_title="RetailX",
+        page_icon="favicon.ico",
 )
-
 class MultiApp:
     def __init__(self):
         self.apps = []
