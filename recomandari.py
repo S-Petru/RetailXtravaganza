@@ -1,4 +1,5 @@
 import streamlit as st
+import plotly.express as px
 import pandas as pd
 import sys
 
@@ -6,22 +7,31 @@ sys.path.insert(1, './scripts/')
 import recommendation_system
 
 def app():
-    st.title('Top 10 Recomandări de Reaprovizionare a Stocurilor')
+    st.header('Top 10 Produse care Necesită Reaprovizionare')
 
-    # Încărcarea datelor
-    transactions_data = pd.read_excel('data/transactions.xlsx')
+    # Crearea unui buton pentru generarea top 10 produse care necesită reaprovizionare
+    if st.button('Afișează Top 10 Produse pentru Reaprovizionare'):
+        # Încărcarea datelor de tranzacții
+        transactions_data = pd.read_excel('data/transactions.xlsx')
 
-    # Crearea unui buton pentru generarea top 10 produse recomandate pentru reaprovizionare
-    if st.button('Afișează Top 10 Recomandări de Reaprovizionare'):
-        top_products_by_volume = recommendation_system.get_top_products_by_volume(transactions_data)
-        
-        if top_products_by_volume.empty:
-            st.error('Nu există suficiente date pentru a genera top 10 recomandări.')
+        top_products = recommendation_system.get_replenishment_recommendations(transactions_data)
+
+        # Verificăm dacă există produse pentru reaprovizionare
+        if not top_products.empty:
+            st.subheader('Top 10 Produse pentru Reaprovizionare:')
+            # Construim un string formatat cu bullet points
+            products_list = "\n".join([f"- {product}: {total} unități vândute" for product, total in top_products.items()])
+            st.markdown(products_list)
+
+            # Crearea DataFrame-ului pentru diagrama Plotly
+            df_top_products = pd.DataFrame(top_products).reset_index()
+            df_top_products.columns = ['Descriere Produs', 'Cantitate Vândută']
+
+            # Crearea unei diagrame Plotly
+            fig = px.bar(df_top_products, x='Descriere Produs', y='Cantitate Vândută', title='Top 10 Produse pentru Reaprovizionare')
+            st.plotly_chart(fig, use_container_width=True)
         else:
-            # Afișați top 10 produse recomandate pentru reaprovizionare
-            st.subheader('Top 10 Recomandări de Reaprovizionare a Stocurilor:')
-            st.table(top_products_by_volume)
-
+            st.error("Nu există suficiente date pentru generarea top 10 produse.")
 
 # Asigurați-vă că apelul funcției app() este executat doar atunci când acest script este rulat direct
 if __name__ == '__main__':

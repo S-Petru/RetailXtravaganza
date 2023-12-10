@@ -61,14 +61,15 @@ def recommend_products(purchased_products, transactions_data):
     
     return recommendations
 
-def get_top_products_by_volume(transactions_data, min_support=0.05):
-    # Se presupune că 'Quantity' este coloana care conține volumul de produse vândute
-    product_volumes = transactions_data.groupby('Description')['Quantity'].sum()
+def get_replenishment_recommendations(transactions_data):
+    """Returnează top 10 produse care necesită reaprovizionare."""
+    # Calculăm suma totală vândută pentru fiecare produs
+    sales_totals = transactions_data.groupby('Description')['Quantity'].sum()
 
-    # Sortează produsele în funcție de volum și returnează top 10
-    top_products_by_volume = product_volumes.sort_values(ascending=False).head(10)
+    # Sortăm produsele în funcție de cantitatea totală vândută în ordine descrescătoare
+    top_products = sales_totals.sort_values(ascending=False).head(10)
 
-    return top_products_by_volume
+    return top_products
 
 if __name__ == "__main__":
     # Încarcă datele din fișierul Excel
