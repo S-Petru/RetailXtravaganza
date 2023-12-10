@@ -12,8 +12,6 @@ def app():
 
     st.markdown("""
     #### Descoperă funcționalitățile:
-    - **Login** pentru acces la tabloul tău de bord personalizat.
-    - Explorează secțiunea <span style='color: #ba1414;'>**Trending**</span> pentru a vedea ultimele tendințe din piață.
     - Verifică secțiunea <span style='color: #ba1414;'>**Alerte**</span> pentru actualizări importante și acțiuni necesare.
     - Folosește <span style='color: #ba1414;'>**Explore Metrics**</span> pentru o analiză detaliată a datelor tale.
     - Contactează-ne oricând prin secțiunea <span style='color: #ba1414;'>**Suport**</span> pentru asistență.

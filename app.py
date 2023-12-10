@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import welcomeBack, login, alerts, recomandari, anomalii, suport
+import welcomeBack, alerts, recomandari, anomalii, suport
 
 st.set_page_config(
         page_title="Explore Metrics"
@@ -21,8 +21,8 @@ class MultiApp:
         with st.sidebar:        
             app = option_menu(
                 menu_title='Explore Metrics',
-                options=['Bine Ai Venit', 'Login','Recomandari','Alerte', 'Anomalii Stoc', 'Suport'],
-                icons=['emoji-laughing','person-circle','graph-up-arrow', 'exclamation-triangle', 'database-exclamation', 'headset'],
+                options=['Bine Ai Venit', 'Anomalii Stoc', 'Recomandari', 'Alerte', 'Suport'],
+                icons=['emoji-laughing', 'database-exclamation', 'graph-up-arrow', 'exclamation-triangle', 'headset'],
                 menu_icon='clipboard-data',
                 default_index=0,
                 styles={
@@ -33,9 +33,7 @@ class MultiApp:
                 )
 
         if app == "Bine Ai Venit":
-            welcomeBack.app()  
-        if app == "Login":
-            login.app()  
+            welcomeBack.app()
         if app == "Recomandari":
             recomandari.app()        
         if app == 'Alerte':
