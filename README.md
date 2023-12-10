@@ -1,3 +1,3 @@
 ## RetailXtravanganza
 
-# App in development.
+# A prototype solution for an online retail bussiness analysis.
