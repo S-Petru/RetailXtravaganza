@@ -22,14 +22,14 @@ class MultiApp:
             app = option_menu(
                 menu_title='Explore Metrics',
                 options=['Bine Ai Venit', 'Login','Recomandari','Alerte', 'Anomalii Stoc', 'Suport'],
-                icons=['emoji-laughing','person-circle','graph-up-arrow', 'exclamation-triangle', 'database-exclamation'],
+                icons=['emoji-laughing','person-circle','graph-up-arrow', 'exclamation-triangle', 'database-exclamation', 'headset'],
                 menu_icon='clipboard-data',
                 default_index=0,
                 styles={
                     "container": {"padding": "5!important","background-color":'#0E1117'},
                     "icon": {"color": "white", "font-size": "32px"}, 
                     "nav-link": {"color":"white","font-size": "18px", "text-align": "left", "margin":"8px 0px", "--hover-color": "#6C7A89"},
-                    "nav-link-selected": {"color":"#ba1414", "background-color": "white"}}
+                    "nav-link-selected": {"color":"#ba1414", "background-color": "white", "font-size": "22px"}}
                 )
 
         if app == "Bine Ai Venit":
