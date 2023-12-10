@@ -36,3 +36,9 @@ Auth token:
 
 Phone Numb:
 +13107361968
+
+OpenAI key
+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
+
+
+Lista de iteme underline suprastoc

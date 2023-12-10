@@ -1,4 +1,3 @@
-# recommendation_system.py
 import pandas as pd
 from mlxtend.frequent_patterns import apriori
 from mlxtend.frequent_patterns import association_rules
@@ -12,6 +11,10 @@ def analyze_customer_purchase_behavior(transactions_data):
 
     # Transformă valorile în binare (0 sau 1) pentru a reflecta dacă produsul a fost cumpărat sau nu
     basket_sets = basket.applymap(lambda x: 1 if x > 0 else 0)
+
+    # Exclud produsele care apar rar
+    product_frequency = basket_sets.sum(axis=0)
+    basket_sets = basket_sets.loc[:, product_frequency > basket_sets.shape[0] * 0.01]
 
     # Aplică algoritmul Apriori pentru a identifica itemset-urile frecvente
     frequent_itemsets = apriori(basket_sets, min_support=0.01, use_colnames=True)
@@ -46,11 +49,11 @@ def recommend_products(purchased_products, transactions_data):
     # Transformă valorile în binare (0 sau 1) pentru a reflecta dacă produsul a fost cumpărat sau nu
     basket_sets = basket.applymap(lambda x: 1 if x > 0 else 0)
 
-    # Exclud produsele deja cumpărate de către client
-    basket_sets = basket_sets.drop(columns=purchased_products, errors='ignore')
+    # Exclud produsele care apar rar
+    basket_sets = basket_sets.loc[:, basket_sets.sum() > basket_sets.shape[0] * 0.01]  # De exemplu, exclude produsele care apar în mai puțin de 1% din facturi
 
-    # Aplică algoritmul Apriori pentru a identifica itemset-urile frecvente
-    frequent_itemsets = apriori(basket_sets, min_support=0.01, use_colnames=True)
+    # Aplică algoritmul Apriori cu un min_support mai mare
+    frequent_itemsets = apriori(basket_sets, min_support=0.02, use_colnames=True)  # Crește min_support pentru a reduce numărul de itemset-uri
 
     # Aplică regulile de asociație pentru a genera recomandări
     rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
@@ -60,12 +63,12 @@ def recommend_products(purchased_products, transactions_data):
     
     return recommendations
 
-if __name__ == "__main__":
-    # Încarcă datele din fișierul Excel
-    transactions_data = pd.read_excel('data/transactions.xlsx')
+def get_replenishment_recommendations(transactions_data):
+    """Returnează top 10 produse care necesită reaprovizionare."""
+    # Calculăm suma totală vândută pentru fiecare produs
+    sales_totals = transactions_data.groupby('Description')['Quantity'].sum()
 
-    # Analizează comportamentul de cumpărare și dezvoltă sistemul de recomandare
-    analyze_customer_purchase_behavior(transactions_data)
+    # Sortăm produsele în funcție de cantitatea totală vândută în ordine descrescătoare
+    top_products = sales_totals.sort_values(ascending=False).head(10)
 
-    # Dezvoltă recomandări personalizate pentru un anumit client
-    develop_recommendation_system(transactions_data, customer_id='12345')
+    return top_products
