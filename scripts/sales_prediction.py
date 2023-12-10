@@ -16,17 +16,15 @@ def train_and_save_model(sales_data):
     model = LinearRegression()
     model.fit(X_train, y_train)
 
-    # Salvează modelul antrenat
+    # Salveaza modelul antrenat
     joblib.dump(model, 'models/sales_model.joblib')
 
-    # Returnează media și deviația standard a vânzărilor
+    # Returneaza media si deviatia standard a vanzarilor
     return y.mean(), y.std()
 
 def get_sales_alerts(some_threshold):
     model = joblib.load('models/sales_model.joblib')
 
-    # Încărcați datele de vânzări pentru a face predicții
-    # Presupunem că aceste date sunt în 'sales_and_eodStocks.xlsx'
     sales_data = pd.read_excel('data/sales_and_eodStocks.xlsx')
     sales_data['Date'] = pd.to_datetime(sales_data['Date'])
     sales_data['day_of_week'] = sales_data['Date'].dt.dayofweek
@@ -34,7 +32,7 @@ def get_sales_alerts(some_threshold):
     sales_data['month'] = sales_data['Date'].dt.month
     X_sales = sales_data[['day_of_week', 'day_of_month', 'month']]
 
-    # Faceți predicții pe aceste date
+    # Fac predictii pe aceste date
     predicted_sales = model.predict(X_sales)
 
     # Generează alertele

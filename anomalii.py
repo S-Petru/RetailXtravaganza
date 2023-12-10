@@ -10,7 +10,7 @@ def app():
 
     if st.button('Verifică Suprastocul'):
         suprastoc_results = suprastocModel('data/sales_and_eodStocks.csv', 'data/transactions.csv')
-        top_overstock_products = suprastoc_results.head(10)  # Afișarea primelor 10 rânduri
+        top_overstock_products = suprastoc_results.head(10)  # Afisarea primelor 10 randuri
 
         if not top_overstock_products.empty:
             st.subheader('Top 10 Produse în Suprastoc:')
