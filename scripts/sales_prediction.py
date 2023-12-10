@@ -3,47 +3,62 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 import joblib
-import plotly.express as px
 
-def explore_sales_and_stock_data(sales_data):
-    """Explorează datele de vânzări."""
-    # Vizualizează datele de vânzări
-    fig = px.line(sales_data, x='Date', y='Sales', title='Vânzări istorice')
-    fig.show()
-
-def develop_sales_prediction_models(sales_data):
-    """Dezvoltă modele de predicție pentru cerere."""
-    # Crearea unor caracteristici temporale suplimentare pentru model
+def train_and_save_model(sales_data):
     sales_data['day_of_week'] = sales_data['Date'].dt.dayofweek
     sales_data['day_of_month'] = sales_data['Date'].dt.day
     sales_data['month'] = sales_data['Date'].dt.month
 
-    # Separă datele în setul de antrenare și cel de testare
     X = sales_data[['day_of_week', 'day_of_month', 'month']]
     y = sales_data['Sales']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
-    # Inițializează și antrenează modelul de regresie liniară
     model = LinearRegression()
     model.fit(X_train, y_train)
-
-    # Efectuează predicții pe setul de testare
-    predictions = model.predict(X_test)
-
-    # Calculează și afișează metrici de performanță
-    mse = mean_squared_error(y_test, predictions)
-    print(f'Mean Squared Error: {mse}')
 
     # Salvează modelul antrenat
     joblib.dump(model, 'models/sales_model.joblib')
 
-if __name__ == "__main__":
-    # Încarcă datele din fișierul Excel
-    sales_data = pd.read_excel('data/sales_and_eodStocks.xlsx', usecols=['Date', 'Sales'])
+    # Returnează media și deviația standard a vânzărilor
+    return y.mean(), y.std()
 
-    # Asigură-te că 'Date' este în format datetime
+def get_sales_alerts(some_threshold):
+    model = joblib.load('models/sales_model.joblib')
+
+    # Încărcați datele de vânzări pentru a face predicții
+    # Presupunem că aceste date sunt în 'sales_and_eodStocks.xlsx'
+    sales_data = pd.read_excel('data/sales_and_eodStocks.xlsx')
+    sales_data['Date'] = pd.to_datetime(sales_data['Date'])
+    sales_data['day_of_week'] = sales_data['Date'].dt.dayofweek
+    sales_data['day_of_month'] = sales_data['Date'].dt.day
+    sales_data['month'] = sales_data['Date'].dt.month
+    X_sales = sales_data[['day_of_week', 'day_of_month', 'month']]
+
+    # Faceți predicții pe aceste date
+    predicted_sales = model.predict(X_sales)
+
+    # Generează alertele
+    alerts = []
+    for idx, prediction in enumerate(predicted_sales):
+        if prediction < some_threshold:
+            alert = f"Alertă de scădere a vânzărilor la data {sales_data.iloc[idx]['Date']}: predicție vânzări {prediction}"
+            alerts.append(alert)
+
+    return alerts
+
+def calculate_alert_threshold():
+    sales_data = pd.read_excel('data/sales_and_eodStocks.xlsx')
+    sales_data['Date'] = pd.to_datetime(sales_data['Date'])
+    mean_sales, std_sales = train_and_save_model(sales_data)
+    return mean_sales - 2 * std_sales
+
+if __name__ == "__main__":
+    sales_data = pd.read_excel('data/sales_and_eodStocks.xlsx')
     sales_data['Date'] = pd.to_datetime(sales_data['Date'])
 
-    # Explorează datele și dezvoltă modelele de predicție
-    explore_sales_and_stock_data(sales_data)
-    develop_sales_prediction_models(sales_data)
+    mean_sales, std_sales = train_and_save_model(sales_data)
+    some_threshold = mean_sales - 2 * std_sales
+
+    alerts = get_sales_alerts(some_threshold)
+    for alert in alerts:
+        print(alert)

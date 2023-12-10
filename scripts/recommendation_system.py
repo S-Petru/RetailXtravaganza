@@ -1,4 +1,5 @@
 # recommendation_system.py
+
 import pandas as pd
 from mlxtend.frequent_patterns import apriori
 from mlxtend.frequent_patterns import association_rules
@@ -59,6 +60,15 @@ def recommend_products(purchased_products, transactions_data):
     recommendations = rules[~rules['antecedents'].apply(lambda x: any(product in purchased_products for product in x))]
     
     return recommendations
+
+def get_top_products_by_volume(transactions_data, min_support=0.05):
+    # Se presupune că 'Quantity' este coloana care conține volumul de produse vândute
+    product_volumes = transactions_data.groupby('Description')['Quantity'].sum()
+
+    # Sortează produsele în funcție de volum și returnează top 10
+    top_products_by_volume = product_volumes.sort_values(ascending=False).head(10)
+
+    return top_products_by_volume
 
 if __name__ == "__main__":
     # Încarcă datele din fișierul Excel
